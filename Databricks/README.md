@@ -1,174 +1,152 @@
-Skip to content
-Navigation Menu
-antoniguedes
-Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse
+# 📊 Exploratory Data Analysis (EDA) in Databricks with Spark SQL
 
-Type / to search
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse/Databricks
-/
-README.md
-in
-main
+This guide shows how to perform EDA in **Databricks** using **Spark SQL** queries.  Part of those steps were done on the JSON  files  loaded in Databricks.
+We first register a DataFrame as a SQL temporary view, then run SQL commands.
 
-Edit
+---
 
-Preview
-Indent mode
-
-Spaces
-Indent size
-
-2
-Line wrap mode
-
-Soft wrap
-Editing README.md file contents
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-101
-102
-103
-104
-105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-### 8. Correlations & Crosstabs
-
+## 1. Load the Data & Register as SQL View
 ```python
-# Correlation matrix
-from pyspark.ml.stat import Correlation
-from pyspark.ml.feature import VectorAssembler
+df = spark.read.csv("/mnt/data/myfile.csv", header=True, inferSchema=True)
+df.createOrReplaceTempView("mytable")
+````
+Or use the +New Data interface to upload new JSON files
 
-num_cols = ["col1", "col2", "col3"]
-vec_assembler = VectorAssembler(inputCols=num_cols, outputCol="features")
-df_vec = vec_assembler.transform(df)
-Correlation.corr(df_vec, "features").head()
+---
+
+## 2. Inspect Schema & Preview Data
+
+```sql
+DESCRIBE TABLE mytable;
 ```
 
-```python
-# Crosstab
-df.crosstab("cat_col1", "cat_col2").show()
+```sql
+SELECT * FROM mytable LIMIT 5;
+```
+
+```sql
+SELECT COUNT(*) AS total_rows FROM mytable;
 ```
 
 ---
 
-### 9. Outlier Detection
+## 3. Check for Missing Values
 
-```python
-q1, q3 = df.approxQuantile("numeric_col", [0.25, 0.75], 0.05)
-iqr = q3 - q1
-lower, upper = q1 - 1.5*iqr, q3 + 1.5*iqr
-
-df.filter((col("numeric_col") < lower) | (col("numeric_col") > upper)).show()
+```sql
+SELECT
+  COUNT(*) AS total_rows,
+  SUM(CASE WHEN col1 IS NULL THEN 1 ELSE 0 END) AS col1_missing,
+  SUM(CASE WHEN col2 IS NULL THEN 1 ELSE 0 END) AS col2_missing
+FROM mytable;
 ```
 
 ---
 
-### 10. Document Insights
+## 4. Descriptive Statistics
 
-Use **Markdown cells** in Databricks to record:
+```sql
+SELECT
+  MIN(numeric_col) AS min_val,
+  MAX(numeric_col) AS max_val,
+  AVG(numeric_col) AS mean_val,
+  PERCENTILE(numeric_col, 0.25) AS q1,
+  PERCENTILE(numeric_col, 0.50) AS median,
+  PERCENTILE(numeric_col, 0.75) AS q3
+FROM mytable;
+```
 
-* Summary statistics
+---
+
+## 5. Categorical Value Distribution
+
+```sql
+SELECT category_col, COUNT(*) AS count
+FROM mytable
+GROUP BY category_col
+ORDER BY count DESC;
+```
+
+---
+
+## 6. Detect Duplicates
+
+```sql
+SELECT *, COUNT(*) AS dup_count
+FROM mytable
+GROUP BY col1, col2, col3  -- list all columns if needed
+HAVING COUNT(*) > 1;
+```
+
+---
+
+## 7. Univariate Distributions (with Databricks Visualizations)
+
+```sql
+SELECT numeric_col
+FROM mytable;
+```
+
+➡️ In Databricks: click **Plot Options** → choose **Histogram**.
+
+---
+
+## 8. Correlations & Crosstabs
+
+```sql
+-- Crosstab of two categorical variables
+SELECT cat_col1, cat_col2, COUNT(*) AS count
+FROM mytable
+GROUP BY cat_col1, cat_col2;
+```
+
+```sql
+-- Correlation approximation (requires numeric cols)
+SELECT corr(col1, col2) AS correlation
+FROM mytable;
+```
+
+---
+
+## 9. Outlier Detection (IQR method)
+
+```sql
+WITH stats AS (
+  SELECT
+    PERCENTILE(numeric_col, 0.25) AS q1,
+    PERCENTILE(numeric_col, 0.75) AS q3
+  FROM mytable
+)
+SELECT t.*
+FROM mytable t, stats s
+WHERE t.numeric_col < s.q1 - 1.5*(s.q3 - s.q1)
+   OR t.numeric_col > s.q3 + 1.5*(s.q3 - s.q1);
+```
+
+---
+
+## 10. Document Insights
+
+Use **Markdown cells** in your Databricks notebook to summarize:
+
+* Data structure & types
 * Missing values
+* Key distributions
 * Outliers
-* Correlations
-* Data quality issues
+* Correlations and anomalies
 
 ---
 
-## ✅ Best Practices
+## ✅ Workflow Recap
 
-* Use **Copy mode** when sampling small subsets for quick visualization.
-* Always document anomalies and assumptions in Markdown.
-* Start with a **sample fraction (1–5%)** for large datasets before scaling.
-* Re-run analysis on full data once EDA logic is validated.
-
----
-
-## 📂 Output
-
-* Cleaned datasets (ready for feature engineering / ML).
-* Markdown documentation of findings.
-* Visualizations of key variables and distributions.
+1. Load Data & Register SQL View
+2. Inspect Schema & Row Counts
+3. Null Value Analysis
+4. Descriptive Stats & Percentiles
+5. Category Distributions
+6. Duplicates Check
+7. Visualizations (Histograms, Boxplots)
+8. Correlations & Crosstabs
+9. Outlier Detection
+10. Document Insights
 
 ---
-
-## 📌 Next Steps
-
-1. Perform **data cleaning** (null handling, outlier removal).
-2. Move to **feature engineering**.
-3. Build **ML pipelines** in Databricks or MLflow.
-
-
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
-No file chosen
-Attach files by dragging & dropping, selecting or pasting them.
-Editing Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse/Databricks/README.md at main · antoniguedes/Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse 
