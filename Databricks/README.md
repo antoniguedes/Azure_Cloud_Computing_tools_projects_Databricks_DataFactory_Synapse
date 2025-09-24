@@ -1,83 +1,105 @@
-# 🚀 Exploratory Data Analysis (EDA) in Databricks Spark Notebook
+Skip to content
+Navigation Menu
+antoniguedes
+Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse
 
-This guide provides a structured process to perform **Exploratory Data Analysis (EDA)** using **PySpark** inside a Databricks notebook. It includes steps, code snippets, and best practices for large-scale data exploration.
+Type / to search
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse/Databricks
+/
+README.md
+in
+main
 
----
+Edit
 
-## 📌 Steps of EDA
+Preview
+Indent mode
 
-### 1. Load the Data
-```python
-# Load CSV
-df = spark.read.csv("/mnt/data/myfile.csv", header=True, inferSchema=True)
+Spaces
+Indent size
 
-# Or load Parquet
-df = spark.read.parquet("/mnt/data/myparquet/")
-````
+2
+Line wrap mode
 
----
-
-### 2. Inspect Schema & Basic Info
-
-```python
-df.printSchema()
-df.show(5)
-df.count()
-```
-
----
-
-### 3. Missing Values
-
-```python
-from pyspark.sql.functions import col, sum
-
-df.select([sum(col(c).isNull().cast("int")).alias(c) for c in df.columns]).show()
-```
-
----
-
-### 4. Descriptive Statistics
-
-```python
-# Summary stats
-df.describe().show()
-
-# Quantiles
-df.approxQuantile("column_name", [0.25, 0.5, 0.75], 0.05)
-```
-
----
-
-### 5. Categorical Distributions
-
-```python
-df.groupBy("category_col").count().orderBy("count", ascending=False).show()
-```
-
----
-
-### 6. Detect Duplicates
-
-```python
-df.groupBy(df.columns).count().filter("count > 1").show()
-```
-
----
-
-### 7. Univariate Visualizations
-
-```python
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-pdf = df.sample(fraction=0.01, seed=42).toPandas()
-sns.histplot(pdf["numeric_col"], bins=30)
-plt.show()
-```
-
----
-
+Soft wrap
+Editing README.md file contents
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
 ### 8. Correlations & Crosstabs
 
 ```python
@@ -145,3 +167,8 @@ Use **Markdown cells** in Databricks to record:
 2. Move to **feature engineering**.
 3. Build **ML pipelines** in Databricks or MLflow.
 
+
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+No file chosen
+Attach files by dragging & dropping, selecting or pasting them.
+Editing Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse/Databricks/README.md at main · antoniguedes/Azure_Cloud_Computing_tools_projects_Databricks_DataFactory_Synapse 
