@@ -22,7 +22,11 @@ This repository contains hands-on projects and resources for working with key Az
    - Prepare your Azure environment by creating a resource group and storage account.
    - Set up permissions and authentication (e.g., via Azure Active Directory).
    - Deploy Azure Data Factory and/or Databricks workspace as needed.
+![Azure setup - creating Blob containers in Azure](https://github.com/user-attachments/assets/1dcac525-5a12-4ba3-852c-613d197e6d91)
+[Azure setup - creating Blob containers in Azure]
 
+![Azure setup - creating the SQL database cost](https://github.com/user-attachments/assets/f5432ca7-01ce-4d07-8ec8-d842a13eaa4c)
+[Azure setup - creating the SQL database cost]
 
 **2. Creating a Dataflow in Azure Data Factory**
    - **Start a new Dataflow**: In Azure Data Factory, navigate to the Author tab and create a new Dataflow.
@@ -33,12 +37,22 @@ This repository contains hands-on projects and resources for working with key Az
      - **Other Transformations**: Aggregate, derive columns, or perform lookups as necessary for your use case.
    - **Configure Sink**: Define where the transformed data should be written (e.g., another Blob Storage container, SQL database).
    - **Debug and Preview**: Use the debug mode to preview data at each step and validate your logic.
+![Azure dataflow - Complete Dataflow](https://github.com/user-attachments/assets/6ee1c87b-12f1-4a6c-bded-4b7ccdaecea1)
+[Azure dataflow - Complete Dataflow]  
+![Azure dataflow - Creating Pipeline of the Dataflow](https://github.com/user-attachments/assets/7e6bc7ff-372f-4471-b102-0708aba616cc)
+[Azure dataflow - Creating Pipeline of the Dataflow]  
 
 **3. Creating a Data Pipeline**
    - **Pipeline Creation**: In Data Factory, create a new pipeline.
    - **Add Dataflow Activity**: Drag your dataflow into the pipeline as an activity.
    - **Set up Triggers and Parameters**: Schedule the pipeline or parameterize it for dynamic execution.
    - **Monitor & Manage**: Use Data Factory monitoring tools to track pipeline runs, diagnose errors, and optimize performance.
+![Azure pipeline - pipeline Container to SQL database](https://github.com/user-attachments/assets/d043aa77-958c-4965-abe3-f62568c21461)
+[Azure pipeline - pipeline Container to SQL database]
+![Azure pipeline - creating the SQL database connection in ADStudio](https://github.com/user-attachments/assets/351d5ee1-c875-4c60-97b4-8cbdbcdb2a4a)
+[Azure pipeline - creating the SQL database connection in ADStudio]
+
+
 
 ---
 
