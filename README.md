@@ -52,7 +52,22 @@ This repository contains hands-on projects and resources for working with key Az
 ![Azure pipeline - creating the SQL database connection in ADStudio](https://github.com/user-attachments/assets/351d5ee1-c875-4c60-97b4-8cbdbcdb2a4a)
 [Azure pipeline - creating the SQL database connection in ADStudio]
 
+**4. Databricks**
+1. Load Data & Register SQL View
+2. Inspect Schema & Row Counts
+3. Null Value Analysis
+4. Descriptive Stats & Percentiles
+5. Duplicates Check
+6. Visualizations (Histograms, Boxplots)
 
+![Azure Databricks - EDA in JSON file on Apache Spark SQL](https://github.com/user-attachments/assets/5cb9eef4-4fc8-4138-bbc5-f5644c8d8d15)
+[Azure Databricks - EDA in JSON file on Apache Spark SQL]  
+![Azure Databricks - EDA in embeded JSON with Spark SQL](https://github.com/user-attachments/assets/8fd164ec-77d5-42b8-a8d9-42470da2166c)
+[Azure Databricks - EDA in embeded JSON with Spark SQL]  
+![Azure Databricks - EDA subquery count Spark SQL](https://github.com/user-attachments/assets/a5276e1e-918d-479d-b623-3cfa231b5c1a)
+[Azure Databricks - EDA subquery count Spark SQL]  
+![Azure Databricks - create new Compute Cluster](https://github.com/user-attachments/assets/fa302da9-e6f3-43c4-a063-ff34598c0ddb)
+[Azure Databricks - create new Compute Cluster]  
 
 ---
 
@@ -61,7 +76,7 @@ This repository contains hands-on projects and resources for working with key Az
 1. Review the `Azure setup` folder to prepare your Azure environment.
 2. Watch the video(s) in `Azure dataflow` for practical demonstrations of building dataflows.
 3. Explore the `Databricks` folder for additional advanced analytics and processing scenarios.
-4. Combine these components to build robust, end-to-end data solutions in Azure!
+4. Combine these components to understand the extend of the data skills form this repository
 
 ---
 
